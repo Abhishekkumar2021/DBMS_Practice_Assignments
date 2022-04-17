@@ -1,0 +1,44 @@
+if (cursor->key.size() <= 2 * cursor->degree)
+            {
+                // first we have to find the correct position for the item to push
+                int i;
+                for (i = 0; i < cursor->key.size(); i++)
+                {
+                    if (cursor->key[i].first < x)
+                        continue;
+                    else
+                        break;
+                }
+                if (i == cursor->key.size())
+                    cursor->key.push_back({x, NULL});
+                else
+                    cursor->key.insert(cursor->key.begin() + i, {x, NULL});
+                // cout<<"From 2\n";
+            }
+            else
+            {
+                Node *newNode = new Node(d, true); // making a new dataNode;
+                numDataNodes++;
+                for (int i = 0; i <= d; i++)
+                {
+                    pair<int, Node *> temp = cursor->key[cursor->key.size() - 1];
+                    cursor->key.pop_back();
+                    newNode->key.insert(newNode->key.begin(), temp);
+                }
+                cursor->last = newNode;
+                int i;
+                for (i = 0; i < newNode->key.size(); i++)
+                {
+                    if (cursor->key[i].first < x)
+                        continue;
+                    else
+                        break;
+                }
+                newNode->key.insert(newNode->key.begin() + i, {x, NULL});
+                Node *newIndex = new Node(t, false);
+                numIndexNodes++;
+                newIndex->key.push_back({newNode->key[0].first, cursor});
+                newIndex->last = newNode;
+                cursor = newIndex;
+                // cout<<"From 3\n";
+            }
